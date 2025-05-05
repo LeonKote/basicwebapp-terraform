@@ -1,0 +1,25 @@
+#cloud-config
+
+runcmd:
+  - curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
+  - apt-get update -y
+  - apt-get install -y git nodejs dotnet-sdk-8.0
+  - git clone https://github.com/ssoncho/basic-web-app.git /home/ubuntu/basic-web-app
+  - git clone https://github.com/LeonKote/BasicWebApp.git /home/ubuntu/BasicWebApp
+  - |
+    cat <<EOF > /home/ubuntu/basic-web-app/.env
+    ${env_file}
+    EOF
+  - |
+    cat <<EOF > /home/ubuntu/BasicWebApp/Api/appsettings.json
+    ${appsettings}
+    EOF
+  - cd /home/ubuntu/basic-web-app && npm install && npm run build
+  - cp -r /home/ubuntu/basic-web-app/dist /home/ubuntu/BasicWebApp/Api/wwwroot
+  - cd /home/ubuntu/BasicWebApp && export HOME=/home/ubuntu && dotnet publish -o out
+  - |
+    cat <<EOF > /etc/systemd/system/basicwebapp.service
+    ${basicwebappservice}
+    EOF
+  - systemctl enable basicwebapp
+  - systemctl start basicwebapp

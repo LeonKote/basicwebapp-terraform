@@ -1,0 +1,12 @@
+[Unit]
+    Description=BasicWebApp
+    After=network.target
+    
+    [Service]
+    WorkingDirectory=/home/ubuntu/BasicWebApp/out
+    ExecStart=dotnet Api.dll
+    Restart=always
+    RestartSec=10
+    
+    [Install]
+    WantedBy=multi-user.target

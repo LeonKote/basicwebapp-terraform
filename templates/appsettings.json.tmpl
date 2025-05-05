@@ -1,0 +1,25 @@
+{
+      "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "Microsoft.AspNetCore": "Warning"
+        }
+      },
+      "AllowedHosts": "*",
+      "ConnectionStrings": {
+        "BasicWebAppDb": "Host=${db_host};Port=6432;Database=${db_database};Username=${db_username};Password=${db_password}"
+      },
+      "AWS": {
+        "ServiceURL": "https://s3.yandexcloud.net",
+        "AccessKey": "${access_key}",
+        "SecretKey": "${secret_key}",
+        "BucketName": "${bucket_name}"
+      },
+      "Kestrel": {
+        "Endpoints": {
+          "Http": {
+            "Url": "http://0.0.0.0:80"
+          }
+        }
+      }
+    }
