@@ -169,7 +169,7 @@ resource "yandex_iam_service_account" "storage_account" {
   name = "storage-account"
 }
 
-resource "yandex_iam_service_account_iam_member" "storage_editor" {
+resource "yandex_resourcemanager_folder_iam_member" "storage_editor" {
   folder_id = var.yc_folder_id
   role      = "storage.editor"
   member    = "serviceAccount:${yandex_iam_service_account.storage_account.id}"
@@ -179,7 +179,7 @@ resource "yandex_iam_service_account" "compute_account" {
   name = "compute-account"
 }
 
-resource "yandex_iam_service_account_iam_member" "editor" {
+resource "yandex_resourcemanager_folder_iam_member" "editor" {
   folder_id = var.yc_folder_id
   role      = "editor"
   member    = "serviceAccount:${yandex_iam_service_account.compute_account.id}"
