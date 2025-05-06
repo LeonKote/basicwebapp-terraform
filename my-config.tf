@@ -106,6 +106,8 @@ resource "yandex_compute_instance_group" "instance-group-1" {
     max_unavailable = 1
     max_expansion   = 0
   }
+
+  depends_on = [yandex_resourcemanager_folder_iam_member.editor]
 }
 
 resource "yandex_vpc_network" "network-1" {
@@ -202,6 +204,8 @@ resource "yandex_storage_bucket" "web_bucket" {
   website {
     index_document = "index.html"
   }
+
+  depends_on = [yandex_resourcemanager_folder_iam_member.storage_editor]
 }
 
 resource "yandex_lb_target_group" "target-group-1" {
