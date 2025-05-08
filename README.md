@@ -9,7 +9,7 @@
 Перед запуском необходимо указать значения переменных в файле `terraform.tfvars`:
 
 ```hcl
-yc_token     = ""  # IAM-токен Yandex Cloud
+yc_token     = ""  # OAuth-токен Yandex Cloud
 yc_cloud_id  = ""  # ID облака
 yc_folder_id = ""  # ID папки
 yc_zone      = "ru-central1-a"
