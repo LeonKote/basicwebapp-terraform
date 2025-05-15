@@ -106,6 +106,10 @@ resource "yandex_compute_instance_group" "instance-group-1" {
     max_unavailable = 1
     max_expansion   = 0
   }
+
+  load_balancer {
+    target_group_name = "target-group-1"
+  }
 }
 
 resource "yandex_vpc_network" "network-1" {
@@ -169,9 +173,9 @@ resource "yandex_iam_service_account" "storage_account" {
   name = "storage-account"
 }
 
-resource "yandex_resourcemanager_folder_iam_member" "storage_editor" {
+resource "yandex_resourcemanager_folder_iam_member" "storage_admin" {
   folder_id = var.yc_folder_id
-  role      = "storage.editor"
+  role      = "storage.admin"
   member    = "serviceAccount:${yandex_iam_service_account.storage_account.id}"
 }
 
@@ -204,18 +208,6 @@ resource "yandex_storage_bucket" "web_bucket" {
   }
 }
 
-resource "yandex_lb_target_group" "target-group-1" {
-  name = "target-group-1"
-
-  dynamic "target" {
-    for_each = yandex_compute_instance_group.instance-group-1.instances
-    content {
-      subnet_id = yandex_vpc_subnet.subnet-1.id
-      address   = target.value.network_interface[0].ip_address
-    }
-  }
-}
-
 resource "yandex_lb_network_load_balancer" "network-load-balancer-1" {
   name = "network-load-balancer-1"
 
@@ -228,7 +220,7 @@ resource "yandex_lb_network_load_balancer" "network-load-balancer-1" {
   }
 
   attached_target_group {
-    target_group_id = yandex_lb_target_group.target-group-1.id
+    target_group_id = yandex_compute_instance_group.instance-group-1.load_balancer[0].target_group_id
 
     healthcheck {
       name = "http"
